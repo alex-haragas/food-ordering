@@ -74,6 +74,18 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="D:/CP/food-ordering/choosing.c">
+			<Option target="food_ordering"/>
+		</Unit>
+		<Unit filename="D:/CP/food-ordering/choosing.h">
+			<Option target="food_ordering"/>
+		</Unit>
+		<Unit filename="D:/CP/food-ordering/display.c">
+			<Option target="food_ordering"/>
+		</Unit>
+		<Unit filename="D:/CP/food-ordering/display.h">
+			<Option target="food_ordering"/>
+		</Unit>
 		<Unit filename="D:/CP/food-ordering/main.c">
 			<Option target="food_ordering"/>
 		</Unit>

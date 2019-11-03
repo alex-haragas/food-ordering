@@ -122,6 +122,60 @@ food_ordering/fast:
 	$(MAKE) -f CMakeFiles\food_ordering.dir\build.make CMakeFiles/food_ordering.dir/build
 .PHONY : food_ordering/fast
 
+choosing.obj: choosing.c.obj
+
+.PHONY : choosing.obj
+
+# target to build an object file
+choosing.c.obj:
+	$(MAKE) -f CMakeFiles\food_ordering.dir\build.make CMakeFiles/food_ordering.dir/choosing.c.obj
+.PHONY : choosing.c.obj
+
+choosing.i: choosing.c.i
+
+.PHONY : choosing.i
+
+# target to preprocess a source file
+choosing.c.i:
+	$(MAKE) -f CMakeFiles\food_ordering.dir\build.make CMakeFiles/food_ordering.dir/choosing.c.i
+.PHONY : choosing.c.i
+
+choosing.s: choosing.c.s
+
+.PHONY : choosing.s
+
+# target to generate assembly for a file
+choosing.c.s:
+	$(MAKE) -f CMakeFiles\food_ordering.dir\build.make CMakeFiles/food_ordering.dir/choosing.c.s
+.PHONY : choosing.c.s
+
+display.obj: display.c.obj
+
+.PHONY : display.obj
+
+# target to build an object file
+display.c.obj:
+	$(MAKE) -f CMakeFiles\food_ordering.dir\build.make CMakeFiles/food_ordering.dir/display.c.obj
+.PHONY : display.c.obj
+
+display.i: display.c.i
+
+.PHONY : display.i
+
+# target to preprocess a source file
+display.c.i:
+	$(MAKE) -f CMakeFiles\food_ordering.dir\build.make CMakeFiles/food_ordering.dir/display.c.i
+.PHONY : display.c.i
+
+display.s: display.c.s
+
+.PHONY : display.s
+
+# target to generate assembly for a file
+display.c.s:
+	$(MAKE) -f CMakeFiles\food_ordering.dir\build.make CMakeFiles/food_ordering.dir/display.c.s
+.PHONY : display.c.s
+
 main.obj: main.c.obj
 
 .PHONY : main.obj
@@ -158,6 +212,12 @@ help:
 	@echo ... food_ordering
 	@echo ... edit_cache
 	@echo ... rebuild_cache
+	@echo ... choosing.obj
+	@echo ... choosing.i
+	@echo ... choosing.s
+	@echo ... display.obj
+	@echo ... display.i
+	@echo ... display.s
 	@echo ... main.obj
 	@echo ... main.i
 	@echo ... main.s
