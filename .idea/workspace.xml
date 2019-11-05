@@ -11,8 +11,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="eb0ddc43-55fc-4db1-a54e-456a72bbaf0a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/choosing.c" beforeDir="false" afterPath="$PROJECT_DIR$/choosing.c" afterDir="false" />
+    <list default="true" id="eb0ddc43-55fc-4db1-a54e-456a72bbaf0a" name="Default Changelist" comment="more files">
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeCache.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.15.3/CMakeCCompiler.cmake" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.15.3/CMakeDetermineCompilerABI_C.bin" beforeDir="false" />
@@ -41,9 +40,6 @@
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/Makefile" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/cmake_install.cmake" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/food_ordering.cbp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/display.c" beforeDir="false" afterPath="$PROJECT_DIR$/display.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/display.h" beforeDir="false" afterPath="$PROJECT_DIR$/display.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/main.c" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -97,7 +93,7 @@
       <workItem from="1572181904077" duration="5960000" />
       <workItem from="1572609950935" duration="270000" />
       <workItem from="1572784318630" duration="5295000" />
-      <workItem from="1572933950478" duration="3223000" />
+      <workItem from="1572933950478" duration="3650000" />
     </task>
     <task id="LOCAL-00001" summary="begining">
       <created>1572182286350</created>
@@ -106,7 +102,14 @@
       <option name="project" value="LOCAL" />
       <updated>1572182286350</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="more files">
+      <created>1572937398541</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1572937398541</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

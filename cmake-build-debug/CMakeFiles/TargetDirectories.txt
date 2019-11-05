@@ -1,3 +1,0 @@
-D:/CP/food-ordering/cmake-build-debug/CMakeFiles/food_ordering.dir
-D:/CP/food-ordering/cmake-build-debug/CMakeFiles/edit_cache.dir
-D:/CP/food-ordering/cmake-build-debug/CMakeFiles/rebuild_cache.dir
