@@ -22,6 +22,8 @@ int choicevalue(int *state, int nochoices)
 }
 void finalchoice(int *state,int *sign,char name[])
 {
+    printf("a) Confirm order\n");
+    printf("b) Go back\n>");
     char choice;
     choice=getchar();
     getchar();
