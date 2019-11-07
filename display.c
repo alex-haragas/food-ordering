@@ -55,4 +55,6 @@ void displayreceipt(char name[], char food[], int foodprice, char drink[], int d
     if(strlen(comment)!=0)
         printf("Additional info: %s\n", comment);
     printf("Payment amount: %d\n\n", foodprice+drinkprice);
+    printf("a) Confirm order\n");
+    printf("b) Go back\n>");
 }

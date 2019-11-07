@@ -70,7 +70,7 @@ int main( )
             case 6:
                 {
                     displayreceipt(name, foodtype[chosefood][chosefoodtipe],foodprice[chosefood][chosefoodtipe],drink[chosedrink],drinkprice[chosedrink],isdrink,cutlery,comment);
-                    finalchoice(&state,&sign,name);
+                    signchoice(&state, &sign, name);
                     break;
                 }
         }

@@ -20,18 +20,15 @@ int choicevalue(int *state, int nochoices)
     }
     return choiceindex;
 }
-void finalchoice(int *state,int *sign,char name[])
+void signchoice(int *state, int *sign, char *name)
 {
-    printf("a) Confirm order\n");
-    printf("b) Go back\n>");
-    char choice;
-    choice=getchar();
-    getchar();
-    if(choice=='a')
+    int choice;
+    choice=choicevalue(state,1);
+    if(choice==0)
     {
         *sign=1;
         printf("Order confirmed! Thank you for buying from us, %s",name);
     }
     else
-        *state=4;
+        (*state)--;
 }
