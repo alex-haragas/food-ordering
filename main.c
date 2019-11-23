@@ -1,28 +1,62 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "display.h"
 #include "choosing.h"
 
 #define MAX_FOOD_NAME 100
-#define MAX_FOOD_TYPE_NAME 100
-#define MAX_DRINK_NAME 100
+#define MAX_MENU_ITEM_NAME 100//since they were equal, I've decided to combine MAX_FOOD_TYPE_NAME and MAX_DRINK_NAME into one costant, this way I won't have to make two functions
+#define MAX_NAME 100
+#define MAX_PASS 100
+#define MAX_COMMENT 100
+#define LOAD_DATA "Please load the data"
+#define MAX_LINE_LENGHT 250
 
 void getcustomerdata(char *name, char *password);
+void getfooddata (char* food, char ** foodtype, int nofoodtype,double* foodprice);
+int nobrakets(char* line);
+void separateitems(char *line, char ** menuitemtype, int nomenuitemtype, double* menuitemprice);
+void getdrinkdata(char **drink, int nodrink, double* drinkprice);
+void freemenuitem(char** menuitemtype, int nomenuitemtype, double* menuitemprice);
 
 int main( )
 {
-    char name[100], pas[100], comment[100]="\0";
-    char food [3][MAX_FOOD_NAME]={"Pizza","Pasta","Salad"};
-    int nofood=3;
-    int nofoodtype[4]={3, 2, 4};
-    char foodtype[3][4][MAX_FOOD_TYPE_NAME]={{"Pizza Carbonara", "Pizza Diavola", "Pizza Margherita"},
-                              {"Chicken alfredo", "Mac & cheese"},
-                              {"Tuna Salad",      "Chicken Salad", "Greek Salad", "Cobb"}};
-    int  foodprice[3][4]={{21,23,19},
-                          {23,21},
-                          {23,22,19,21}};
-    int nodrink=4;
-    char drink[4][MAX_DRINK_NAME]={"Coca-cola","Fanta","Lipton","Water"};
-    int drinkprice[5]={5,5,5,4}; // The 5th position will be zero, so the final price wont increase in chase option e is chosen.
+    printf("%s\n",LOAD_DATA);
+    int nofood;
+    scanf("%d",&nofood);
+    getchar();
+    char** food=(char**)malloc(nofood* sizeof(char*));
+    int* nofoodtype=(int*)malloc((nofood* sizeof(int)));
+    char*** foodtype=(char***)malloc(nofood* sizeof(int**));
+    double**  foodprice=(double**)malloc(nofood* sizeof(double*));
+    for(int i=0;i<nofood;i++)
+    {
+        char* line=(char*)malloc(MAX_LINE_LENGHT* sizeof(char));
+        food[i]=(char*)malloc(MAX_FOOD_NAME* sizeof(char));
+        gets(line);
+        int twodots=strchr(line,':')-line;
+        strncpy(food[i],line,twodots);
+        food[i][twodots]='\0';
+        nofoodtype[i]=nobrakets(line);
+        foodtype[i]=(char**)malloc(nofoodtype[i]* sizeof(char*));
+        foodprice[i]=(double*)malloc(nofoodtype[i]* sizeof(double));
+        for(int j=0;j<nofoodtype[i];j++)
+            foodtype[i][j]=(char*)malloc(MAX_MENU_ITEM_NAME* sizeof(char));
+        separateitems(line,foodtype[i],nofoodtype[i],foodprice[i]);
+        free(line);
+    }
+    printf("%lf",foodprice[0][0]);
+    int nodrink;
+    scanf("%d",&nodrink);
+    getchar();
+    char** drink=(char**)malloc(nodrink* sizeof(char*));
+    double* drinkprice=(double*)malloc(nodrink+1* sizeof(double));//I want to have a 0 on the nodrink th position
+    drinkprice[nodrink]=0;
+    getdrinkdata(drink, nodrink, drinkprice);
+    char* name=(char*)malloc(MAX_NAME*sizeof(char));
+    char* pas=(char*)malloc(MAX_PASS*sizeof(char));
+    char* comment=(char*)malloc(MAX_COMMENT*sizeof(char));
+    comment[0]='\0';
     int state=0,sign=0, chosefood=0, chosefoodtipe=0,chosedrink=0,isdrink=1, cutlery=0;
     while(sign==0)
     {
@@ -75,6 +109,14 @@ int main( )
                 }
         }
     }
+    for(int i=0;i<nofood;i++)
+    {
+        freemenuitem(foodtype[i], nofoodtype[i], foodprice[i]);
+        free(food[i]);
+    }
+    free(food);
+    freemenuitem(drink,nodrink,drinkprice);
+    free(drink);
     return 0;
 }
 void getcustomerdata(char *name, char *password)
@@ -85,4 +127,45 @@ void getcustomerdata(char *name, char *password)
     gets(name);
     printf("--Password\n>");
     gets(password);
+}
+void getdrinkdata(char **drink, int nodrink, double* drinkprice)
+{
+    char* line=(char*)malloc(MAX_LINE_LENGHT* sizeof(char));
+    gets(line);
+    separateitems(line,drink,nodrink,drinkprice);
+    free(line);
+}
+int nobrakets(char* line)
+{
+    int no=0;
+    char* braket=strchr(line,'(');
+    while(braket!=NULL)
+    {
+        no++;
+        braket=strchr(braket+1,'(');
+    }
+    return no;
+}
+void separateitems(char *line, char** menuitemtype, int nomenuitemtype, double* menuitemprice)
+{
+    int braket=0;
+    for(int i=0; i < nomenuitemtype; i++)
+    {
+        braket=strchr(line+braket+1,'(')-line;
+        int minus=strchr(line+braket,'-')-line;
+        while(line[minus+1]!=' ')//makes sure the '-' is not int the name of the item
+            minus=strchr(line+minus+1,'-')-line;
+        strncpy(menuitemtype[i], line + braket + 1, minus - braket - 2);//-2 is needed to make sure only the name is copied
+        menuitemtype[minus-braket-2]='\0';
+        menuitemprice[i]=atof(line + minus + 2);//2 is needed to get to the starting position of the number
+    }
+}
+void freemenuitem(char** menuitemtype, int nomenuitemtype, double* menuitemprice)
+{
+    for(int i=0;i<nomenuitemtype;i++)
+    {
+        free(menuitemtype[i]);
+    }
+    free(menuitemprice);
+    free(menuitemtype);
 }
