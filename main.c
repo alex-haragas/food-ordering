@@ -45,14 +45,18 @@ int main( )
         separateitems(line,foodtype[i],nofoodtype[i],foodprice[i]);
         free(line);
     }
-    printf("%lf",foodprice[0][0]);
     int nodrink;
     scanf("%d",&nodrink);
     getchar();
     char** drink=(char**)malloc(nodrink* sizeof(char*));
+    for(int i=0;i<nodrink;i++)
+        drink[i]=(char*)malloc(MAX_MENU_ITEM_NAME* sizeof(char*));
     double* drinkprice=(double*)malloc(nodrink+1* sizeof(double));//I want to have a 0 on the nodrink th position
     drinkprice[nodrink]=0;
-    getdrinkdata(drink, nodrink, drinkprice);
+    char* line=(char*)malloc(MAX_LINE_LENGHT* sizeof(char));
+    gets(line);
+    separateitems(line,drink,nodrink,drinkprice);
+    free(line);
     char* name=(char*)malloc(MAX_NAME*sizeof(char));
     char* pas=(char*)malloc(MAX_PASS*sizeof(char));
     char* comment=(char*)malloc(MAX_COMMENT*sizeof(char));
@@ -63,50 +67,50 @@ int main( )
         switch(state)
         {
             case 0:
-                {
-                    getcustomerdata(name, pas);
-                    state = 1;
-                    break;
-                }
+            {
+                getcustomerdata(name, pas);
+                state = 1;
+                break;
+            }
             case 1:
-                {
-                    displayfood(nofood,food);
-                    chosefood=choicevalue(&state, nofood);
-                    break;
-                }
+            {
+                displayfood(nofood,food);
+                chosefood=choicevalue(&state, nofood);
+                break;
+            }
             case 2:
-                {
-                       displayfoodtype(nofoodtype[chosefood],foodtype[chosefood],foodprice[chosefood],food[chosefood]);
-                       chosefoodtipe=choicevalue(&state, nofoodtype[chosefood]);
-                       break;
-                }
+            {
+                displayfoodtype(nofoodtype[chosefood],foodtype[chosefood],foodprice[chosefood],food[chosefood]);
+                chosefoodtipe=choicevalue(&state, nofoodtype[chosefood]);
+                break;
+            }
             case 3:
-                {
-                    displaydrink(nodrink,drink,drinkprice,food[chosefood]);
-                    chosedrink= choicevalue(&state,(nodrink+1));
-                    if(chosedrink==nodrink)
-                         isdrink=0;
-                    break;
-                }
+            {
+                displaydrink(nodrink,drink,drinkprice,food[chosefood]);
+                chosedrink= choicevalue(&state,(nodrink+1));
+                if(chosedrink==nodrink)
+                    isdrink=0;
+                break;
+            }
             case 4:
-                {
-                    displaycutlery();
-                    cutlery=choicevalue(&state,2);
-                    break;
-                }
+            {
+                displaycutlery();
+                cutlery=choicevalue(&state,2);
+                break;
+            }
             case 5:
-                {
-                    printf("Any additional info?(Press Enter if you don't want to write.)\n>");
-                    gets(comment);
-                    state=6;
-                    break;
-                }
+            {
+                printf("Any additional info?(Press Enter if you don't want to write.)\n>");
+                gets(comment);
+                state=6;
+                break;
+            }
             case 6:
-                {
-                    displayreceipt(name, foodtype[chosefood][chosefoodtipe],foodprice[chosefood][chosefoodtipe],drink[chosedrink],drinkprice[chosedrink],isdrink,cutlery,comment);
-                    signchoice(&state, &sign, name);
-                    break;
-                }
+            {
+                displayreceipt(name, foodtype[chosefood][chosefoodtipe],foodprice[chosefood][chosefoodtipe],drink[chosedrink],drinkprice[chosedrink],isdrink,cutlery,comment);
+                signchoice(&state, &sign, name);
+                break;
+            }
         }
     }
     for(int i=0;i<nofood;i++)
@@ -117,6 +121,9 @@ int main( )
     free(food);
     freemenuitem(drink,nodrink,drinkprice);
     free(drink);
+    free(comment);
+    free(name);
+    free(pas);
     return 0;
 }
 void getcustomerdata(char *name, char *password)
@@ -128,13 +135,7 @@ void getcustomerdata(char *name, char *password)
     printf("--Password\n>");
     gets(password);
 }
-void getdrinkdata(char **drink, int nodrink, double* drinkprice)
-{
-    char* line=(char*)malloc(MAX_LINE_LENGHT* sizeof(char));
-    gets(line);
-    separateitems(line,drink,nodrink,drinkprice);
-    free(line);
-}
+
 int nobrakets(char* line)
 {
     int no=0;
@@ -148,16 +149,16 @@ int nobrakets(char* line)
 }
 void separateitems(char *line, char** menuitemtype, int nomenuitemtype, double* menuitemprice)
 {
-    int braket=0;
+    int braket=strchr(line,'(')-line;
     for(int i=0; i < nomenuitemtype; i++)
     {
-        braket=strchr(line+braket+1,'(')-line;
         int minus=strchr(line+braket,'-')-line;
         while(line[minus+1]!=' ')//makes sure the '-' is not int the name of the item
             minus=strchr(line+minus+1,'-')-line;
         strncpy(menuitemtype[i], line + braket + 1, minus - braket - 2);//-2 is needed to make sure only the name is copied
-        menuitemtype[minus-braket-2]='\0';
+        menuitemtype[i][minus-braket-2]='\0';
         menuitemprice[i]=atof(line + minus + 2);//2 is needed to get to the starting position of the number
+        braket=strchr(line+braket+1,'(')-line;
     }
 }
 void freemenuitem(char** menuitemtype, int nomenuitemtype, double* menuitemprice)
