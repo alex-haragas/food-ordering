@@ -13,18 +13,32 @@
 #define MAX_LINE_LENGHT 250
 
 void getcustomerdata(char *name, char *password);
-void getfooddata (char* food, char ** foodtype, int nofoodtype,double* foodprice);
 int nobrakets(char* line);
 void separateitems(char *line, char ** menuitemtype, int nomenuitemtype, double* menuitemprice);
-void getdrinkdata(char **drink, int nodrink, double* drinkprice);
 void freemenuitem(char** menuitemtype, int nomenuitemtype, double* menuitemprice);
 
 int main( )
 {
-    printf("%s\n",LOAD_DATA);
+    FILE *datafile;
+    int isfile=0;
+    datafile=fopen("D:\\CP\\food-ordering\\data.txt","r");
+    if(datafile==NULL)
+    {
+        printf("Error opening the file. %s\n", LOAD_DATA);
+    }
+    else
+        isfile=1;
     int nofood;
-    scanf("%d",&nofood);
-    getchar();
+    if(isfile==0) {
+        scanf("%d", &nofood);
+        getchar();//reads the ':' after the number
+        getchar();
+    } else
+    {
+        fscanf(datafile,"%d",&nofood);
+        fgetc(datafile);//reads the ':' after the number
+        fgetc(datafile);
+    }
     char** food=(char**)malloc(nofood* sizeof(char*));
     int* nofoodtype=(int*)malloc((nofood* sizeof(int)));
     char*** foodtype=(char***)malloc(nofood* sizeof(int**));
@@ -33,7 +47,10 @@ int main( )
     {
         char* line=(char*)malloc(MAX_LINE_LENGHT* sizeof(char));
         food[i]=(char*)malloc(MAX_FOOD_NAME* sizeof(char));
+        if(isfile==0)
         gets(line);
+        else
+            fgets(line, 250, datafile);
         int twodots=strchr(line,':')-line;
         strncpy(food[i],line,twodots);
         food[i][twodots]='\0';
@@ -46,15 +63,29 @@ int main( )
         free(line);
     }
     int nodrink;
+    if(isfile==0)
+    {
     scanf("%d",&nodrink);
-    getchar();
+    getchar();//read the ':' after the number
+    getchar();}
+    else
+    {
+        fscanf(datafile,"%d",&nodrink);
+        fgetc(datafile);//reads the ':' after the number
+        fgetc(datafile);
+    }
     char** drink=(char**)malloc(nodrink* sizeof(char*));
     for(int i=0;i<nodrink;i++)
         drink[i]=(char*)malloc(MAX_MENU_ITEM_NAME* sizeof(char*));
-    double* drinkprice=(double*)malloc(nodrink+1* sizeof(double));//I want to have a 0 on the nodrink th position
+    double* drinkprice=(double*)malloc((nodrink+1)* sizeof(double));//I want to have a 0 on the nodrink th position
     drinkprice[nodrink]=0;
     char* line=(char*)malloc(MAX_LINE_LENGHT* sizeof(char));
-    gets(line);
+    if(isfile==0)
+        gets(line);
+    else
+    {
+        fgets(line,250,datafile);
+    }
     separateitems(line,drink,nodrink,drinkprice);
     free(line);
     char* name=(char*)malloc(MAX_NAME*sizeof(char));
@@ -100,7 +131,7 @@ int main( )
             }
             case 5:
             {
-                printf("Any additional info?(Press Enter if you don't want to write.)\n>");
+                printf("Any additional info?(Press Enter if you don't want to write.)\n");
                 gets(comment);
                 state=6;
                 break;
@@ -124,6 +155,7 @@ int main( )
     free(comment);
     free(name);
     free(pas);
+    fclose(datafile);
     return 0;
 }
 void getcustomerdata(char *name, char *password)
