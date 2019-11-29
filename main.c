@@ -12,8 +12,8 @@
 #define LOAD_DATA "Please load the data"
 #define MAX_LINE_LENGHT 250
 
+int firstnumber(char* s);
 void getcustomerdata(char *name, char *password);
-int nobrakets(char* line);
 void separateitems(char *line, char ** menuitemtype, int nomenuitemtype, double* menuitemprice);
 void freemenuitem(char** menuitemtype, int nomenuitemtype, double* menuitemprice);
 
@@ -51,10 +51,10 @@ int main( )
         gets(line);
         else
             fgets(line, 250, datafile);
-        int twodots=strchr(line,':')-line;
-        strncpy(food[i],line,twodots);
-        food[i][twodots]='\0';
-        nofoodtype[i]=nobrakets(line);
+        int poznumber= firstnumber(line);
+        strncpy(food[i], line, poznumber-1);
+        food[i][poznumber-1]='\0';
+        nofoodtype[i]=atoi(line+poznumber);
         foodtype[i]=(char**)malloc(nofoodtype[i]* sizeof(char*));
         foodprice[i]=(double*)malloc(nofoodtype[i]* sizeof(double));
         for(int j=0;j<nofoodtype[i];j++)
@@ -88,6 +88,7 @@ int main( )
     }
     separateitems(line,drink,nodrink,drinkprice);
     free(line);
+    fclose(datafile);
     char* name=(char*)malloc(MAX_NAME*sizeof(char));
     char* pas=(char*)malloc(MAX_PASS*sizeof(char));
     char* comment=(char*)malloc(MAX_COMMENT*sizeof(char));
@@ -155,30 +156,18 @@ int main( )
     free(comment);
     free(name);
     free(pas);
-    fclose(datafile);
     return 0;
 }
 void getcustomerdata(char *name, char *password)
 {
     printf("Welcome to Food Thingies!\n");
     printf("Please Sing in to continue!\n");
-    printf("--Username\n>");
+    printf("--Username\n");
     gets(name);
-    printf("--Password\n>");
+    printf("--Password\n");
     gets(password);
 }
 
-int nobrakets(char* line)
-{
-    int no=0;
-    char* braket=strchr(line,'(');
-    while(braket!=NULL)
-    {
-        no++;
-        braket=strchr(braket+1,'(');
-    }
-    return no;
-}
 void separateitems(char *line, char** menuitemtype, int nomenuitemtype, double* menuitemprice)
 {
     int braket=strchr(line,'(')-line;
@@ -201,4 +190,10 @@ void freemenuitem(char** menuitemtype, int nomenuitemtype, double* menuitemprice
     }
     free(menuitemprice);
     free(menuitemtype);
+}
+int firstnumber(char* s)
+{
+    for(int i=0;i<strlen(s);i++)
+        if(s[i]>='0' && s[i]<='9')
+            return i;
 }
