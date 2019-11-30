@@ -4,6 +4,18 @@
 
 #include <stdio.h>
 #include <string.h>
+
+#define SIGN_IN "Sign in"
+#define SIGN_UP "Sign up"
+#define SIGN_IN_UP "Do you want to sign in ot sign up?"
+void customersignin()
+{
+    printf("Welcome to Food Thingies!\n");
+    printf("%s\n",SIGN_IN_UP);
+    printf("a) %s\n",SIGN_IN);
+    printf("b) %s\n",SIGN_UP);
+}
+
 void displayfood(int nofood, char** food)
 {
     printf("Please choose the food you feel like eating today:\n");

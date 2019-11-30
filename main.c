@@ -3,7 +3,9 @@
 #include <string.h>
 #include "display.h"
 #include "choosing.h"
+#include "signing.h"
 
+#define MAX_CUSTOMERS 10
 #define MAX_FOOD_NAME 100
 #define MAX_MENU_ITEM_NAME 100//since they were equal, I've decided to combine MAX_FOOD_TYPE_NAME and MAX_DRINK_NAME into one costant, this way I won't have to make two functions
 #define MAX_NAME 100
@@ -13,7 +15,6 @@
 #define MAX_LINE_LENGHT 250
 
 int firstnumber(char* s);
-void getcustomerdata(char *name, char *password);
 void separateitems(char *line, char ** menuitemtype, int nomenuitemtype, double* menuitemprice);
 void freemenuitem(char** menuitemtype, int nomenuitemtype, double* menuitemprice);
 
@@ -89,8 +90,17 @@ int main( )
     separateitems(line,drink,nodrink,drinkprice);
     free(line);
     fclose(datafile);
+    char** namelist=(char**)malloc(MAX_CUSTOMERS * sizeof(char*));
+    char** paslist=(char**)malloc(MAX_CUSTOMERS * sizeof(char*));
+    for(int i=0;i<MAX_CUSTOMERS;i++)
+    {
+        namelist[i]=(char*)malloc(MAX_NAME * sizeof(char));
+        paslist[i]=(char*)malloc(MAX_PASS * sizeof(char));
+    }
+    strcpy(namelist[0], "admin");
+    strcpy(paslist[0], "admin");
     char* name=(char*)malloc(MAX_NAME*sizeof(char));
-    char* pas=(char*)malloc(MAX_PASS*sizeof(char));
+    int nocustomers=1;
     char* comment=(char*)malloc(MAX_COMMENT*sizeof(char));
     comment[0]='\0';
     int state=0,sign=0, chosefood=0, chosefoodtipe=0,chosedrink=0,isdrink=1, cutlery=0;
@@ -100,8 +110,21 @@ int main( )
         {
             case 0:
             {
-                getcustomerdata(name, pas);
-                state = 1;
+                customersignin();
+                char choice=getchar();
+                getchar();
+                if(choice=='a')
+                    signin(namelist,paslist,nocustomers,name,&state);
+                    else
+                        if(choice=='b')
+                        {
+                            if(nocustomers==MAX_CUSTOMERS)
+                                printf("You can't create an account right now");
+                            {
+                                nocustomers++;
+                                signup(namelist, paslist, nocustomers, name, &state);
+                            }
+                        }
                 break;
             }
             case 1:
@@ -139,7 +162,7 @@ int main( )
             }
             case 6:
             {
-                displayreceipt(name, foodtype[chosefood][chosefoodtipe],foodprice[chosefood][chosefoodtipe],drink[chosedrink],drinkprice[chosedrink],isdrink,cutlery,comment);
+                displayreceipt(name, foodtype[chosefood][chosefoodtipe], foodprice[chosefood][chosefoodtipe], drink[chosedrink], drinkprice[chosedrink], isdrink, cutlery, comment);
                 signchoice(&state, &sign, name);
                 break;
             }
@@ -154,18 +177,9 @@ int main( )
     freemenuitem(drink,nodrink,drinkprice);
     free(drink);
     free(comment);
-    free(name);
-    free(pas);
+    free(namelist);
+    free(paslist);
     return 0;
-}
-void getcustomerdata(char *name, char *password)
-{
-    printf("Welcome to Food Thingies!\n");
-    printf("Please Sing in to continue!\n");
-    printf("--Username\n");
-    gets(name);
-    printf("--Password\n");
-    gets(password);
 }
 
 void separateitems(char *line, char** menuitemtype, int nomenuitemtype, double* menuitemprice)

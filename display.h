@@ -5,6 +5,7 @@
 #ifndef FOOD_ORDERING_DISPLAY_H
 #define FOOD_ORDERING_DISPLAY_H
 
+void customersignin();
 void displayfood(int nofood, char** food);//It displays food options.
 void displayfoodtype(int nofood, char** foodtype, double * price, char* food);//It display the types available for the chosen food and their prices.
 void displaydrink(int nodrink, char** drink, double* price, char* food);//It displays drink options. I would have used the displayfood function, but I wanted to have it display the "No thanks option!".
