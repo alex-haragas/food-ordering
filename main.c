@@ -20,7 +20,7 @@ void freemenuitem(char** menuitemtype, int nomenuitemtype, double* menuitemprice
 
 int main( )
 {
-    FILE *datafile;
+    FILE *datafile, *customerdata;
     int isfile=0;
     datafile=fopen("D:\\CP\\food-ordering\\data.txt","r");
     if(datafile==NULL)
@@ -90,6 +90,13 @@ int main( )
     separateitems(line,drink,nodrink,drinkprice);
     free(line);
     fclose(datafile);
+    customerdata=fopen("D:\\CP\\food-ordering\\customerdata.txt","r");
+    int nocustomers;
+    fscanf(customerdata,"%d",&nocustomers);
+    fgetc(customerdata);
+    int key;
+    fscanf(customerdata,"%d",&key);
+    fgetc(customerdata);
     char** namelist=(char**)malloc(MAX_CUSTOMERS * sizeof(char*));
     char** paslist=(char**)malloc(MAX_CUSTOMERS * sizeof(char*));
     for(int i=0;i<MAX_CUSTOMERS;i++)
@@ -97,10 +104,12 @@ int main( )
         namelist[i]=(char*)malloc(MAX_NAME * sizeof(char));
         paslist[i]=(char*)malloc(MAX_PASS * sizeof(char));
     }
-    strcpy(namelist[0], "admin");
-    strcpy(paslist[0], "admin");
+    for(int i=0;i<nocustomers;i++) {
+        fscanf(customerdata, "%s", namelist[i]);
+        fscanf(customerdata, "%s", paslist[i]);
+    }
+    fclose(customerdata);
     char* name=(char*)malloc(MAX_NAME*sizeof(char));
-    int nocustomers=1;
     char* comment=(char*)malloc(MAX_COMMENT*sizeof(char));
     comment[0]='\0';
     int state=0,sign=0, chosefood=0, chosefoodtipe=0,chosedrink=0,isdrink=1, cutlery=0;
@@ -114,7 +123,7 @@ int main( )
                 char choice=getchar();
                 getchar();
                 if(choice=='a')
-                    signin(namelist,paslist,nocustomers,name,&state);
+                    signin(namelist,paslist,nocustomers,name,key,&state);
                     else
                         if(choice=='b')
                         {
@@ -122,7 +131,7 @@ int main( )
                                 printf("You can't create an account right now");
                             {
                                 nocustomers++;
-                                signup(namelist, paslist, nocustomers, name, &state);
+                                signup(namelist, paslist, nocustomers, name,key, &state);
                             }
                         }
                 break;

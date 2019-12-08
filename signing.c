@@ -28,7 +28,66 @@ int checkname(char **namelist,int nocustomers,char* name)
     return -1;
 }
 
-void signin(char **namelist,char **passlist,int nocustomers,char *name,int *state)
+void pasencryption(int key, char *s)
+{
+    if(key>('z'-'a'+1))
+        key=key%('z'-'a'+1);
+    int key2=key;
+    if(key2>9)
+        key2=key2%10;//I need this because numbers loot faster than letters
+    for(int i=0;i<strlen(s);i++)
+    {
+        if(s[i]>='a' && s[i]<='z')
+        {
+            if(s[i]+key>'z')
+                s[i]=s[i]-'z'+'a'+key-1;
+            else
+                s[i]=s[i]+key;
+        }
+        if(s[i]>='A' && s[i]<='Z')
+        {
+            if(s[i]+key>'Z')
+                s[i]=s[i]-'Z'+'A'+key-1;
+            else
+                s[i]=s[i]+key;
+        }
+        if(s[i]>='0' && s[i]<='9')
+        {
+            if(s[i]+key>'9')
+                s[i]=s[i]-'9'+'0'+key2-1;
+            else
+                s[i]=s[i]+key2;
+        }
+    }
+}
+void pasdecryption(int key, char *s) {
+    if (key>('z'-'a'+1))
+        key=key%('z'-'a'+1);
+    int key2=key;
+    if (key2>9)
+        key2=key2%10;//I need this because numbers loot faster than letters
+    for (int i=0;i<strlen(s);i++) {
+        if (s[i]>='a' && s[i]<='z') {
+            if (s[i]-key <'a')
+                s[i]=s[i]+'z'-'a'-key+1;
+            else
+                s[i]=s[i]-key;
+        }
+        if (s[i]>='A' && s[i]<='Z') {
+            if (s[i]+key<'A')
+                s[i]=s[i]+'Z'-'A'-key+1;
+            else
+                s[i]=s[i]-key;
+        }
+        if (s[i]>='0' && s[i]<='9') {
+            if (s[i]-key<'0')
+                s[i]=s[i]+'9'-'0'-key2+1;
+            else
+                s[i]=s[i]-key2;
+        }
+    }
+}
+void signin(char **namelist,char **passlist,int nocustomers,char *name,int key, int *state)
 {
     printf("%s\n", SIGNING_IN);
     while(*state==0) {
@@ -43,6 +102,7 @@ void signin(char **namelist,char **passlist,int nocustomers,char *name,int *stat
         } else {
             printf("--Password\n");
             gets(customerpas);
+            pasdecryption(key,passlist[poz]);
             if (strcmp(customerpas, passlist[poz]) != 0)
                 printf("%s\n",INCORRECT_PASSWORD);
             else
@@ -50,6 +110,7 @@ void signin(char **namelist,char **passlist,int nocustomers,char *name,int *stat
                 *state=1;
                 strcpy(name,customername);
             }
+            pasencryption(key,passlist[poz]);
         }
     }
 }
@@ -82,7 +143,7 @@ int checkpas(char* password, char* name) {
     }
     return ok;
 }
-void signup(char **namelist,char **passlist,int nocustomers,char *name,int *state)
+void signup(char **namelist,char **passlist,int nocustomers,char *name,int key,int *state)
 {
     printf("%s\n", SIGNING_UP);
     while(*state==0)
@@ -101,7 +162,14 @@ void signup(char **namelist,char **passlist,int nocustomers,char *name,int *stat
             if(*state==1) {
                 strcpy(name, customername);
                 strcpy(namelist[nocustomers-1],customername);
+                pasencryption(key,customerpas);
                 strcpy(passlist[nocustomers-1],customerpas);
+                FILE *customedata=fopen("D:\\CP\\food-ordering\\customerdata.txt","a");
+                fprintf(customedata,"\n%s %s",name,customerpas);
+                fclose(customedata);
+                customedata=fopen("D:\\CP\\food-ordering\\customerdata.txt","r+");
+                fprintf(customedata,"%d",nocustomers);
+                fclose(customedata);
             }
         }
     }
