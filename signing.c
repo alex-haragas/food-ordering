@@ -168,7 +168,7 @@ void signup(char **namelist,char **passlist,int nocustomers,char *name,int key,i
                 fprintf(customedata,"\n%s %s",name,customerpas);
                 fclose(customedata);
                 customedata=fopen("D:\\CP\\food-ordering\\customerdata.txt","r+");
-                fprintf(customedata,"%d",nocustomers);
+                fprintf(customedata,"%d\n%d\n",key,nocustomers);
                 fclose(customedata);
             }
         }

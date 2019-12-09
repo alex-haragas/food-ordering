@@ -5,7 +5,7 @@
 #include "choosing.h"
 #include "signing.h"
 
-#define MAX_CUSTOMERS 10
+#define MAX_CUSTOMERS 9
 #define MAX_FOOD_NAME 100
 #define MAX_MENU_ITEM_NAME 100//since they were equal, I've decided to combine MAX_FOOD_TYPE_NAME and MAX_DRINK_NAME into one costant, this way I won't have to make two functions
 #define MAX_NAME 100
@@ -91,11 +91,11 @@ int main( )
     free(line);
     fclose(datafile);
     customerdata=fopen("D:\\CP\\food-ordering\\customerdata.txt","r");
-    int nocustomers;
-    fscanf(customerdata,"%d",&nocustomers);
-    fgetc(customerdata);
     int key;
     fscanf(customerdata,"%d",&key);
+    fgetc(customerdata);
+    int nocustomers;
+    fscanf(customerdata,"%d",&nocustomers);
     fgetc(customerdata);
     char** namelist=(char**)malloc(MAX_CUSTOMERS * sizeof(char*));
     char** paslist=(char**)malloc(MAX_CUSTOMERS * sizeof(char*));
