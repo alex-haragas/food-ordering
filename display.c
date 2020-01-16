@@ -16,35 +16,6 @@ void customersignin()
     printf("b) %s\n",SIGN_UP);
 }
 
-void displayfood(int nofood, char** food)
-{
-    printf("Please choose the food you feel like eating today:\n");
-    for (int i = 0; i < nofood; i++)
-    {
-        printf("%c) %s \n", 'a' + i, food[i]);
-    }
-    printf("%c) Go back \n", 'a' + nofood);
-}
-void displayfoodtype(int nofood, char** foodtype, double * price, char* food)
-{
-    printf("Please choose the type of %s:\n", food);
-    for (int i = 0; i < nofood; i++)
-    {
-        printf("%c) %s: %.2f \n", 'a' + i, foodtype[i],price[i]);
-    }
-    printf("%c) Go back \n", 'a' + nofood);
-}
-
-void displaydrink(int nodrink, char** drink,double * price, char* food)
-{
-    printf("Please choose a drink to go with your %s:\n" ,food);
-    for(int i=0;i<nodrink;i++)
-    {
-        printf("%c) %s: %.2f \n",'a'+i,drink[i],price[i]);
-    }
-    printf("%c) No, thanks!\n", 'a'+nodrink);
-    printf("%c) Go back \n",'a'+nodrink+1);
-}
 void displaycutlery()
 {
     printf("Do you want cutlery?\n");
